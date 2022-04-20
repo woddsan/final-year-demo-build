@@ -1,0 +1,15 @@
+{"intents":[
+    {
+    "tag":"",
+    "patterns":[""],
+    "responses":[""]
+}
+]}
+
+
+intall nltk
+nltk.download()
+
+
+pip install pipwin
+pipwin pyaudio
