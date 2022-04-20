@@ -14,6 +14,8 @@ import pywhatkit
 import webbrowser
 from gtts import gTTS
 import playsound
+import re
+import random
 #login and add user
 name = str(input("What's your name? \n"))
 if name == "":
@@ -55,11 +57,16 @@ r=sr.Recognizer()
 
 """
 def addContact():
-    return
+    #enter name
+    #enter contact
+
+
 
 
 def hello():
-    None
+    greet = ["Hi", "Hello","Hello There","What is up","Hiya","Hey","Hello and Welcome"]
+    sel=random.randint(0,7)
+    texttoSpeech(greet[sel])
 
 def playMusic():
     None
