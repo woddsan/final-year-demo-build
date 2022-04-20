@@ -12,15 +12,21 @@ import pyttsx3 as tts
 import sys
 import pywhatkit
 import webbrowser
-
+from gtts import gTTS
+import playsound
 #login and add user
 name = str(input("What's your name? \n"))
 if name == "":
     while name=="":
         name = str(input("The one with no name?Surely you must have one \n"))
-    
 
 
+def texttoSpeech(text):
+    my_audio=gTTS(text)
+    my_audio.save("output.mp3")
+    playsound.playsound("output.mp3")
+
+texttoSpeech("Hello"+name)
 
 #username check and add
 names = [line.strip() for line in open("username.txt")]
@@ -36,9 +42,10 @@ else:
     p.close
 
 
-
+texttoSpeech("How many hours is your average work session?")
 timeslot = input("How many hours is your average work session? \n")
 
+texttoSpeech("Please Enter")
 water = input("Please enter water intake goal (Liters). A good starting point can be 4 liters. \n")
 #interval = input("You can add time interval.")
 
@@ -46,6 +53,7 @@ recognizer = sr.Recognizer()
 r=sr.Recognizer()
 
 
+"""
 def addContact():
     return
 
@@ -71,3 +79,7 @@ def searchGoogle():
 def addContact(name):
     None
 
+def quit():
+    
+    sys.exit(0)
+"""
