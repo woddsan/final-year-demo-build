@@ -20,6 +20,7 @@ import playsound
 import re
 import random
 import pyjokes
+import wikipedia
 
 #login and add user
 name = str(input("What's your name? \n"))
@@ -88,6 +89,8 @@ def queryExecute(query):
         searchGoogle(query)
     if command =="joke" or command=="tell":
         tellJoke()
+    if command =="summarize" or command =="summary" or command=="summarise":
+        sumWiki(query)
         
     else:
         pass
@@ -100,7 +103,19 @@ def searchGoogle(url_build):
     linereq=str(url_build.split(' ',1)[1:])
     webbrowser.open("https://www.google.com/search?q="+linereq)
 
-    None
+def sumWiki(wikuery):
+    wikreq=str(wikuery.split(' ',1)[1:])
+    try:
+        summary=wikipedia.summary(wikreq,sentences=1)
+        texttoSpeech(summary)
+    except Exception as x:
+        webbrowser.open("https://en.wikipedia.org/wiki/"+wikreq)
+
+
+
+
+
+    
 
 
 def hello():
