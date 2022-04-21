@@ -19,6 +19,8 @@ from gtts import gTTS
 import playsound
 import re
 import random
+import pyjokes
+
 #login and add user
 name = str(input("What's your name? \n"))
 if name == "":
@@ -78,12 +80,27 @@ def queryExecute(query):
         hello()
     if command=="play":
         playMusic(query)
-    if command=="exit":
+    if command=="exit" or command=="quit" or command =="bye":
         exit()
+    if command=="send" or command=="email" or command=="mail":
+        sendEmail()
+    if command=="search":
+        searchGoogle(query)
+    if command =="joke" or command=="tell":
+        tellJoke()
+        
     else:
-        texttoSpeech("please try again")
+        pass
 
+def tellJoke():
+    punchline=pyjokes.get_joke()
+    texttoSpeech(punchline)
 
+def searchGoogle(url_build):
+    linereq=str(url_build.split(' ',1)[1:])
+    webbrowser.open("https://www.google.com/search?q="+linereq)
+
+    None
 
 
 def hello():
@@ -95,18 +112,19 @@ def playMusic(trackName):
     texttoSpeech("playing"+trackName)
     sleep(2)
     pywhatkit.playonyt(trackName)
+
+def sendEmail():
+    webbrowser.open("https://mail.google.com/mail/u/2/#inbox?compose=new")
 """
 def sendMessage():
     None
 
-def sendEmail():
-    webbrowser.open("https://mail.google.com/mail/u/2/#inbox?compose=new")
+
 
 def waterRemind():
     None
 
-def searchGoogle():
-    None
+
 
 def addContact(name):
     None
@@ -120,7 +138,7 @@ while True :
     with sr.Microphone() as source:
         print("Listening")
         r.pause_threshold=1
-        r.adjust_for_ambient_noise(source,duration=0.2)
+        r.adjust_for_ambient_noise(source,duration=1)
         audio = r.listen(source)
     try:
         print("Recognizing..")
@@ -133,5 +151,5 @@ while True :
     except Exception as e:
         print(e)
 
-        texttoSpeech("come again")
+        
         sleep(2)

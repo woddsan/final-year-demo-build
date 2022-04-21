@@ -13,3 +13,8 @@ nltk.download()
 
 pip install pipwin
 pipwin pyaudio
+
+playsound 1.2.2
+
+pyjokes
+
