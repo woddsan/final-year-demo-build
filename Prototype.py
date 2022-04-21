@@ -1,8 +1,11 @@
 #imports
 from binascii import rlecode_hqx
+from cgitb import text
 from email import message
 from email.mime import audio
 from fileinput import filename
+import os
+from time import sleep
 from turtle import done
 from unittest import skip
 from neuralintents import GenericAssistant
@@ -25,8 +28,10 @@ if name == "":
 
 def texttoSpeech(text):
     my_audio=gTTS(text)
-    my_audio.save("output.mp3")
-    playsound.playsound("output.mp3")
+    my_audio.save("noutput.mp3")
+    playsound.playsound("noutput.mp3")
+    sleep(3)
+    os.remove("noutput.mp3")
 
 texttoSpeech("Hello"+name)
 
@@ -50,7 +55,13 @@ timeslot = input("How many hours is your average work session? \n")
 texttoSpeech("Please Enter")
 water = input("Please enter water intake goal (Liters). A good starting point can be 4 liters. \n")
 #interval = input("You can add time interval.")
-
+"""
+mappings = {
+            "greeting":hello,
+            "play":playMusic,
+            "exit":quit
+}
+"""
 recognizer = sr.Recognizer()
 r=sr.Recognizer()
 
@@ -59,6 +70,18 @@ r=sr.Recognizer()
 def addContact():
     #enter name
     #enter contact
+    None
+"""
+def queryExecute(query):
+    command=query.split(' ',1)[0]
+    if command=="hello":
+        hello()
+    if command=="play":
+        playMusic(query)
+    if command=="exit":
+        exit()
+    else:
+        texttoSpeech("please try again")
 
 
 
@@ -68,9 +91,11 @@ def hello():
     sel=random.randint(0,7)
     texttoSpeech(greet[sel])
 
-def playMusic():
-    None
-
+def playMusic(trackName):
+    texttoSpeech("playing"+trackName)
+    sleep(2)
+    pywhatkit.playonyt(trackName)
+"""
 def sendMessage():
     None
 
@@ -85,8 +110,28 @@ def searchGoogle():
 
 def addContact(name):
     None
-
+"""
 def quit():
     
     sys.exit(0)
-"""
+
+#listener
+while True :
+    with sr.Microphone() as source:
+        print("Listening")
+        r.pause_threshold=1
+        r.adjust_for_ambient_noise(source,duration=0.2)
+        audio = r.listen(source)
+    try:
+        print("Recognizing..")
+        query=r.recognize_google(audio,language="en-in")
+        run=str(query)
+        
+        run=run.lower()
+        queryExecute(run)
+        
+    except Exception as e:
+        print(e)
+
+        texttoSpeech("come again")
+        sleep(2)
