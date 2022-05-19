@@ -21,6 +21,24 @@ import re
 import random
 import pyjokes
 import wikipedia
+from socket import timeout
+import time
+import schedule
+
+from matplotlib.pyplot import title
+from plyer import notification
+
+
+def notif():
+        notification.notify(
+        title = "Have some water",
+        message = "Keep yourself  Hydrated",
+        #app_icon = "Iconsmind-Outline-Wine-Bottle.ico",
+        timeout=5
+        )
+        
+        
+schedule.every(6).seconds.do(notif)   
 
 #login and add user
 name = str(input("What's your name? \n"))
@@ -33,7 +51,7 @@ def texttoSpeech(text):
     my_audio=gTTS(text)
     my_audio.save("noutput.mp3")
     playsound.playsound("noutput.mp3")
-    sleep(3)
+    sleep(1)
     os.remove("noutput.mp3")
 
 texttoSpeech("Hello"+name)
@@ -54,6 +72,7 @@ else:
 
 texttoSpeech("How many hours is your average work session?")
 timeslot = input("How many hours is your average work session? \n")
+
 
 texttoSpeech("Please Enter")
 water = input("Please enter water intake goal (Liters). A good starting point can be 4 liters. \n")
@@ -95,6 +114,11 @@ def queryExecute(query):
     else:
         pass
 
+
+        
+
+    
+
 def tellJoke():
     punchline=pyjokes.get_joke()
     texttoSpeech(punchline)
@@ -124,9 +148,10 @@ def hello():
     texttoSpeech(greet[sel])
 
 def playMusic(trackName):
-    texttoSpeech("playing"+trackName)
+    tracks=str(trackName.split(' ',1)[1:])
+    texttoSpeech("playing"+tracks)
     sleep(2)
-    pywhatkit.playonyt(trackName)
+    pywhatkit.playonyt(tracks)
 
 def sendEmail():
     webbrowser.open("https://mail.google.com/mail/u/2/#inbox?compose=new")
@@ -150,6 +175,8 @@ def quit():
 
 #listener
 while True :
+    schedule.run_pending()
+    
     with sr.Microphone() as source:
         print("Listening")
         r.pause_threshold=1
@@ -162,9 +189,13 @@ while True :
         
         run=run.lower()
         queryExecute(run)
+
+        
+
         
     except Exception as e:
         print(e)
 
         
         sleep(2)
+    
