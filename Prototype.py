@@ -24,9 +24,13 @@ import wikipedia
 from socket import timeout
 import time
 import schedule
+import subprocess
 
 from matplotlib.pyplot import title
 from plyer import notification
+
+
+
 
 
 def notif():
@@ -135,11 +139,6 @@ def sumWiki(wikuery):
     except Exception as x:
         webbrowser.open("https://en.wikipedia.org/wiki/"+wikreq)
 
-
-
-
-
-    
 
 
 def hello():
