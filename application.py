@@ -45,7 +45,17 @@ import importlib
 
 songlist = ["Toy Story you got a friend in me","Rick Astley Never Gonna Give you Up","Shrek somebody once told me","pharrell happy","liam payne sunshine"]
 
+totalstepcount=0
 
+
+def stepNotif():
+    notification.notify(
+        title = "You can walk a few steps",
+        message = "Activity Time",
+        #app_icon = "Iconsmind-Outline-Wine-Bottle.ico",
+        timeout=2
+        )
+    
 
 def check():
     import testemodet
@@ -93,6 +103,15 @@ def notif():
         #app_icon = "Iconsmind-Outline-Wine-Bottle.ico",
         timeout=5
         )
+
+def notif():
+        notification.notify(
+        title = "Have some water",
+        message = "Keep yourself  Hydrated",
+        #app_icon = "Iconsmind-Outline-Wine-Bottle.ico",
+        timeout=5
+        )
+
 
 #textToSpeech
 def texttoSpeech(text):
@@ -154,7 +173,10 @@ class MainThread(QThread):
         super(MainThread,self).__init__()
 
     def run(self):
+
         #hello()
+        hello()
+        check()
         self.schdFun()
 
 
@@ -188,7 +210,7 @@ class MainThread(QThread):
         if command=="play":
             playMusic(self.query)
         if command=="exit" or command=="quit" or command =="bye":
-            exit()
+            quit()
         if command=="send" or command=="email" or command=="mail":
             sendEmail()
         if command=="search":
@@ -203,11 +225,12 @@ class MainThread(QThread):
     
     def schdFun(self):
         startTime=int(time.time())
-        hello()
+        
+
         while True:
             newTime=int(time.time())
             newCount=newTime-startTime
-            if newCount>=5:
+            if newCount>=300:
                 notif()
                 check()
                 startTime=int(time.time())
@@ -251,12 +274,19 @@ class Main(QMainWindow):
         self.ui.textBrowser_2.setText(label_time)
 
     def steps(self):
+        global totalstepcount
         url = "https://v1.nocodeapi.com/zetaknight/fit/GpWLJGwidrAOkBVc/aggregatesDatasets?dataTypeName=steps_count&timePeriod=today"
         params = {}
         steps = requests.get(url = url, params = params)
         steps_c = steps.json()
+        ncount = steps_c['steps_count'][0]['value']
         st=str(steps_c['steps_count'][0]['value'])
         self.ui.textBrowser_3.setText(st)
+        if totalstepcount==0:
+            totalstepcount=ncount
+        elif ncount<totalstepcount:
+            stepNotif()
+
 
 
 app = QApplication(sys.argv)
