@@ -34,13 +34,13 @@ from socket import timeout
 import time
 import schedule
 import subprocess
-import testemodet
+
 from matplotlib.pyplot import title
 from plyer import notification
 import random
+import importlib
 
-from importlib import reload
-reload(testemodet)
+
 
 
 songlist = ["Toy Story you got a friend in me","Rick Astley Never Gonna Give you Up","Shrek somebody once told me","pharrell happy","liam payne sunshine"]
@@ -48,8 +48,10 @@ songlist = ["Toy Story you got a friend in me","Rick Astley Never Gonna Give you
 
 
 def check():
+    import testemodet
     
     mood = testemodet.emodet()
+    
     
 
     if mood == "Neutral" :
@@ -70,13 +72,17 @@ def check():
         
 
     elif mood == "Angry":
-        print("Sad")
+        print("ANGRY")
         texttoSpeech("let's kick back and relax a little")
         notif()
         
 
     elif mood=="":
         print("none")
+    
+    elif mood=="No faces found":
+        texttoSpeech("No face found please sit properly")
+        
 
 
 #notif
@@ -120,8 +126,10 @@ def sumWiki(wikuery):
 
 def hello():
     greet = ["Hi", "Hello","Hello There","What is up","Hiya","Hey","Hello and Welcome"]
-    sel=random.randint(0,7)
+    sel=random.randint(0,6)
     texttoSpeech(greet[sel])
+    texttoSpeech("I will scan your face now. Please stand infront of the camera.")
+    
 
 def playMusic(trackName):
     tracks=str(trackName.split(' ',1)[1:])
@@ -140,10 +148,13 @@ def quit():
 
 
 class MainThread(QThread):
+    
+
     def __init__(self):
         super(MainThread,self).__init__()
 
     def run(self):
+        #hello()
         self.schdFun()
 
 
@@ -192,16 +203,20 @@ class MainThread(QThread):
     
     def schdFun(self):
         startTime=int(time.time())
+        hello()
         while True:
             newTime=int(time.time())
             newCount=newTime-startTime
-            if newCount>=3600 or newCount==0:
+            if newCount>=5:
                 notif()
-                startTime=int(time.time())
                 check()
+                startTime=int(time.time())
+                
             
             else:
                 self.queryExecute()
+
+    
 
 
 startExecution = MainThread()
@@ -216,6 +231,7 @@ class Main(QMainWindow):
         self.ui.pushButton_2.clicked.connect(self.close)
 
     def startTask(self):
+        
         self.ui.movie =  QtGui.QMovie("tumblr_nfetk2UwcB1sj5h4oo1_1280.webp")  
         self.ui.label.setMovie(self.ui.movie)
         self.ui.movie.start()
@@ -223,6 +239,7 @@ class Main(QMainWindow):
         timer.timeout.connect(self.showTime)
         timer.start(1000)
         startExecution.start()
+        
         
 
     def showTime(self):
