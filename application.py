@@ -175,6 +175,7 @@ class MainThread(QThread):
     def run(self):
 
         #hello()
+        notif()
         hello()
         check()
         self.schdFun()
@@ -274,18 +275,32 @@ class Main(QMainWindow):
         self.ui.textBrowser_2.setText(label_time)
 
     def steps(self):
-        global totalstepcount
-        url = "https://v1.nocodeapi.com/zetaknight/fit/GpWLJGwidrAOkBVc/aggregatesDatasets?dataTypeName=steps_count&timePeriod=today"
+        url = "https://v1.nocodeapi.com/zetaknight/fit/GpWLJGwidrAOkBVc/aggregatesDatasets?dataTypeName=steps_count,active_minutes,calories_expended&timePeriod=today"
         params = {}
-        steps = requests.get(url = url, params = params)
-        steps_c = steps.json()
-        ncount = steps_c['steps_count'][0]['value']
-        st=str(steps_c['steps_count'][0]['value'])
-        self.ui.textBrowser_3.setText(st)
+        r = requests.get(url = url, params = params)
+        result = r.json()
+        steps=str(result['steps_count'][0]['value'])
+        active=str(result['active_minutes'][0]['value'])
+        calories=str(result['calories_expended'][0]['value'])
+        self.ui.textBrowser_3.setText(steps)
+        self.ui.textBrowser_7.setText(active)
+        self.ui.textBrowser_8.setText(calories)
+
+        try:
+            
+            st=str(result['steps_count'][0]['value'])
+            self.ui.textBrowser_3.setText(st)
+        
+        except:
+            texttoSpeech("Your smart device is not connected")
+
+        
+        """
         if totalstepcount==0:
             totalstepcount=ncount
         elif ncount<totalstepcount:
             stepNotif()
+        """
 
 
 
